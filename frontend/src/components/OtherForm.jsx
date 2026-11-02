@@ -18,11 +18,12 @@ export const OtherForm = ({ initial, onSubmit, submitLabel = "Save Job Sheet", s
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
   const total = round2(num(f.amount));
   const balance = round2(total - num(f.advance));
-  const advErr = num(f.advance) > total ? "Advance cannot exceed amount" : null;
+  const amtErr = num(f.amount) < 0 ? "Value cannot be negative" : null;
+  const advErr = num(f.advance) < 0 ? "Value cannot be negative" : num(f.advance) > total ? "Advance cannot exceed amount" : null;
 
   const submit = (e) => {
     e.preventDefault();
-    if (advErr) return;
+    if (advErr || amtErr) return;
     onSubmit({
       category: "other",
       customer_name: f.customer_name.trim(),
@@ -43,7 +44,7 @@ export const OtherForm = ({ initial, onSubmit, submitLabel = "Save Job Sheet", s
         <Field label="Date" id="other-date" type="date" value={f.date} onChange={set("date")} required />
         <Field label="Type of Job" id="other-job-type" placeholder="e.g. Visiting cards, Flex banner" value={f.job_type} onChange={set("job_type")} required />
         <Field label="Quantity" id="other-quantity" type="number" min="1" step="1" value={f.quantity} onChange={set("quantity")} required />
-        <Field label="Amount" id="other-amount" prefix="₹" type="number" min="0" step="0.01" value={f.amount} onChange={set("amount")} required />
+        <Field label="Amount" id="other-amount" prefix="₹" type="number" min="0" step="0.01" value={f.amount} onChange={set("amount")} error={amtErr} required />
         <Field label="Advance" id="other-advance" prefix="₹" type="number" min="0" step="0.01" value={f.advance} onChange={set("advance")} error={advErr} />
       </div>
       <div className="bg-slate-950/80 border border-blue-900/40 p-5 rounded-xl space-y-3 h-fit" data-testid="other-calc-panel">
@@ -51,7 +52,7 @@ export const OtherForm = ({ initial, onSubmit, submitLabel = "Save Job Sheet", s
         <CalcRow label="Total Amount" value={inr(total)} strong />
         <CalcRow label="Advance" value={inr(f.advance)} tone="text-emerald-300" />
         <div className="border-t border-slate-800 pt-3"><CalcRow label="Balance" value={inr(balance)} strong tone="text-red-300" /></div>
-        <Button type="submit" disabled={submitting || !!advErr} data-testid="other-submit-button" className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white">
+        <Button type="submit" disabled={submitting || !!advErr || !!amtErr} data-testid="other-submit-button" className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white">
           {submitting ? "Saving..." : submitLabel}
         </Button>
       </div>

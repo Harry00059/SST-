@@ -20,9 +20,12 @@ export const WeddingForm = ({ initial, onSubmit, submitLabel = "Save Job Sheet",
   const gross = round2(num(f.card_cost) + num(f.printing_cost));
   const total = round2(gross - num(f.discount));
   const balance = round2(total - num(f.advance));
+  const neg = (k) => (num(f[k]) < 0 ? "Value cannot be negative" : null);
   const errors = {
-    discount: num(f.discount) > gross ? "Discount cannot exceed card + printing cost" : null,
-    advance: num(f.advance) > total ? "Advance cannot exceed total amount" : null,
+    card_cost: neg("card_cost"),
+    printing_cost: neg("printing_cost"),
+    discount: neg("discount") || (num(f.discount) > gross ? "Discount cannot exceed card + printing cost" : null),
+    advance: neg("advance") || (num(f.advance) > total ? "Advance cannot exceed total amount" : null),
   };
   const invalid = Object.values(errors).some(Boolean);
 
@@ -49,8 +52,8 @@ export const WeddingForm = ({ initial, onSubmit, submitLabel = "Save Job Sheet",
         <Field label="Contact Number" id="wedding-contact-number" type="tel" pattern="[0-9+\-\s]{7,15}" title="7-15 digits" value={f.contact_number} onChange={set("contact_number")} required />
         <Field label="Date" id="wedding-date" type="date" value={f.date} onChange={set("date")} required />
         <Field label="Quantity" id="wedding-quantity" type="number" min="1" step="1" value={f.quantity} onChange={set("quantity")} required />
-        <Field label="Card Cost" id="wedding-card-cost" prefix="₹" type="number" min="0" step="0.01" value={f.card_cost} onChange={set("card_cost")} required />
-        <Field label="Printing Cost" id="wedding-printing-cost" prefix="₹" type="number" min="0" step="0.01" value={f.printing_cost} onChange={set("printing_cost")} required />
+        <Field label="Card Cost (total order)" id="wedding-card-cost" prefix="₹" type="number" min="0" step="0.01" value={f.card_cost} onChange={set("card_cost")} error={errors.card_cost} required />
+        <Field label="Printing Cost (total order)" id="wedding-printing-cost" prefix="₹" type="number" min="0" step="0.01" value={f.printing_cost} onChange={set("printing_cost")} error={errors.printing_cost} required />
         <Field label="Discount (optional)" id="wedding-discount" prefix="₹" type="number" min="0" step="0.01" value={f.discount} onChange={set("discount")} error={errors.discount} />
         <Field label="Advance" id="wedding-advance" prefix="₹" type="number" min="0" step="0.01" value={f.advance} onChange={set("advance")} error={errors.advance} />
       </div>

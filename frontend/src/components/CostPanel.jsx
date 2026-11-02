@@ -17,8 +17,12 @@ export const CostPanel = ({ job, onSave, saving, readOnly }) => {
   const profit = round2(job.total_amount - prod);
   const margin = job.total_amount ? round2((profit / job.total_amount) * 100) : 0;
 
+  const negErr = (k) => (num(f[k]) < 0 ? "Value cannot be negative" : null);
+  const invalid = ["actual_card_cost", "actual_printing_cost", "actual_production_cost"].some(negErr);
+
   const submit = (e) => {
     e.preventDefault();
+    if (invalid) return;
     onSave(wedding
       ? { actual_card_cost: num(f.actual_card_cost), actual_printing_cost: num(f.actual_printing_cost) }
       : { actual_production_cost: num(f.actual_production_cost) });
@@ -31,11 +35,11 @@ export const CostPanel = ({ job, onSave, saving, readOnly }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {wedding ? (
             <>
-              <Field label="Actual Card Cost" id="cost-actual-card" prefix="₹" type="number" min="0" step="0.01" value={f.actual_card_cost} onChange={set("actual_card_cost")} required disabled={readOnly} />
-              <Field label="Actual Printing Cost" id="cost-actual-printing" prefix="₹" type="number" min="0" step="0.01" value={f.actual_printing_cost} onChange={set("actual_printing_cost")} required disabled={readOnly} />
+              <Field label="Actual Card Cost" id="cost-actual-card" prefix="₹" type="number" min="0" step="0.01" value={f.actual_card_cost} onChange={set("actual_card_cost")} error={negErr("actual_card_cost")} required disabled={readOnly} />
+              <Field label="Actual Printing Cost" id="cost-actual-printing" prefix="₹" type="number" min="0" step="0.01" value={f.actual_printing_cost} onChange={set("actual_printing_cost")} error={negErr("actual_printing_cost")} required disabled={readOnly} />
             </>
           ) : (
-            <Field label="Actual Production Cost" id="cost-actual-production" prefix="₹" type="number" min="0" step="0.01" value={f.actual_production_cost} onChange={set("actual_production_cost")} required disabled={readOnly} />
+            <Field label="Actual Production Cost" id="cost-actual-production" prefix="₹" type="number" min="0" step="0.01" value={f.actual_production_cost} onChange={set("actual_production_cost")} error={negErr("actual_production_cost")} required disabled={readOnly} />
           )}
         </div>
       </div>
@@ -45,7 +49,7 @@ export const CostPanel = ({ job, onSave, saving, readOnly }) => {
         <div className="border-t border-slate-800 pt-3"><CalcRow label="Actual Profit" value={inr(profit)} strong tone={profit < 0 ? "text-red-300" : "text-emerald-300"} /></div>
         <CalcRow label="Profit Margin" value={`${margin}%`} strong tone="text-cyan-300" />
         {!readOnly && (
-          <Button type="submit" disabled={saving} data-testid="cost-save-button" className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white">
+          <Button type="submit" disabled={saving || invalid} data-testid="cost-save-button" className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white">
             {saving ? "Saving..." : "Save Costs"}
           </Button>
         )}
