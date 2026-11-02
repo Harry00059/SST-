@@ -14,9 +14,10 @@ User choices: Wedding Total = Card Cost + Printing Cost − Discount; Overdue = 
 - All modules above; tested by testing agent (backend 26/27, frontend all flows). Fixed after test: zero-cost save now marks costs recorded; contact must contain 7–15 digits; stale search response guard; toasts moved bottom-right.
 - Settings: shop name, address, phone, email, print footer, overdue days.
 
+- 2026-11-02: Report exports — every report tab has "Download Spreadsheet" (CSV with UTF-8 BOM, opens in Excel; shop name, period, summary, detail table) and "Print A4 / PDF" (white print-only layout, 12mm margins, app UI hidden). Files: lib/reportExport.js, components/ReportPrint.jsx.
+
 ## Backlog
 - P2: Docker build not executed in this environment (verify on Windows).
-- P2: Export reports to CSV/print.
 
 ## Next tasks
 - User review and feedback.

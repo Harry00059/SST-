@@ -92,9 +92,19 @@ body {
     margin: 0;
 }
 
+@page report {
+    size: A4;
+    margin: 12mm;
+}
+
+.print-only { display: none; }
+
 @media print {
     html, body { background: #fff !important; }
-    .no-print { display: none !important; }
+    .no-print, .screen-only { display: none !important; }
+    .print-only { display: block !important; }
+    .report-print { page: report; font-family: "Plus Jakarta Sans", sans-serif; }
+    .app-shell-main { margin-left: 0 !important; padding: 0 !important; background: #fff !important; animation: none !important; }
     .print-wrap { padding: 0 !important; background: #fff !important; min-height: 0 !important; }
     .a4-sheet { box-shadow: none !important; margin: 0 !important; border: none !important; }
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }

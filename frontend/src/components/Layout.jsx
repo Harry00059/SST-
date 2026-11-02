@@ -51,26 +51,26 @@ export default function Layout() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
   return (
-    <div className="min-h-screen bg-[#0B0F17] text-slate-100">
-      <aside className="hidden lg:flex w-64 bg-slate-950/90 border-r border-slate-800 flex-col justify-between h-screen fixed left-0 top-0 z-40">
+    <div className="min-h-screen bg-[#0B0F17] text-slate-100 print:bg-white">
+      <aside className="no-print hidden lg:flex w-64 bg-slate-950/90 border-r border-slate-800 flex-col justify-between h-screen fixed left-0 top-0 z-40">
         <div>
           <Brand />
           <NavItems />
         </div>
         <div className="p-5 text-[11px] text-slate-500 border-t border-slate-800">SST Cards and Printers</div>
       </aside>
-      <header className="lg:hidden sticky top-0 z-40 bg-slate-950/95 backdrop-blur border-b border-slate-800 flex items-center justify-between pr-3">
+      <header className="no-print lg:hidden sticky top-0 z-40 bg-slate-950/95 backdrop-blur border-b border-slate-800 flex items-center justify-between pr-3">
         <Brand />
         <button data-testid="mobile-menu-toggle" onClick={() => setOpen(!open)} className="p-2 rounded-lg text-slate-300 hover:bg-slate-800">
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </header>
       {open && (
-        <div className="lg:hidden fixed inset-x-0 top-[81px] z-30 bg-slate-950 border-b border-slate-800">
+        <div className="no-print lg:hidden fixed inset-x-0 top-[81px] z-30 bg-slate-950 border-b border-slate-800">
           <NavItems onNavigate={() => setOpen(false)} />
         </div>
       )}
-      <main key={pathname} className="lg:ml-64 min-h-screen app-grid-bg p-5 md:p-8 rise">
+      <main key={pathname} className="app-shell-main lg:ml-64 min-h-screen app-grid-bg p-5 md:p-8 rise">
         <Outlet />
       </main>
     </div>
