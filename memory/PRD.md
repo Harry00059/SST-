@@ -16,6 +16,8 @@ User choices: Wedding Total = Card Cost + Printing Cost − Discount; Overdue = 
 
 - 2026-11-02: Report exports — every report tab has "Download Spreadsheet" (CSV with UTF-8 BOM, opens in Excel; shop name, period, summary, detail table) and "Print A4 / PDF" (white print-only layout, 12mm margins, app UI hidden). Files: lib/reportExport.js, components/ReportPrint.jsx.
 
+- 2026-11-02: Confirmed wedding Total = Card Cost + Printing Cost − Discount (total order amounts, never × quantity); added on-screen "Value cannot be negative" errors in both forms and Cost Management; field labels say "(total order)". Testing agent iteration_2: 45/45 backend, all UI checks pass (example 5000/2000/500/3000 → 6500/3500).
+
 ## Backlog
 - P2: Docker build not executed in this environment (verify on Windows).
 

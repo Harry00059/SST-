@@ -1,0 +1,17 @@
+{
+  "summary": "Iteration 2: Wedding totals, actual costs/profit, and negative-value validation. Backend: 45/45 pytest pass (the 27 regression tests, including the previously failing zero-cost costs_recorded test, plus 18 new tests in test_wedding_totals.py). UI tested end to end and all checks pass. With quantity 1, 1000 or 500 and Card 5000 / Printing 2000 / Discount 500 / Advance 3000, the form shows Total ₹6,500.00 and Balance ₹3,500.00, and the backend saves 6500/3500. Changing card cost recalculates live. Editing quantity to 1200 on the Job Details tab keeps the total at 6500. Cost Management with actual card 3000 and printing 1500 shows ₹4,500 / ₹2,000 / 30.77%, recalculates live, and the backend values match; selling prices stay 5000/2000. Negative card/printing/discount/advance/amount/actual-cost values show 'Value cannot be negative' and disable submit. Advance greater than total shows an error. The backend rejects negatives with 422 and advance > total with 400. The print sheet shows the selling fields and no actual costs, profit or margin. Other Printing: 1500/500 gives balance 1000, and production cost 900 gives profit 600 (40%). Work Management grid and search, delete to Recycle Bin, and Reports Daily all work. No page errors.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": ["/app/backend/tests/test_sst_jobs.py", "/app/backend/tests/test_wedding_totals.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Design items from iteration_1 still apply: native date inputs instead of the shadcn date picker, and toasts covering the header buttons."
+  ],
+  "updated_files": ["/app/backend/tests/test_wedding_totals.py"],
+  "success_rate": {"backend": "100% (45/45)", "frontend": "100%"},
+  "test_credentials": "None - no auth",
+  "seed_data_creation": "None kept. All TEST_ jobs were deleted; db.jobs had 0 jobs left, so db.counters was cleared and the next job will be SST-2026-001.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Run pytest /app/backend/tests/ with REACT_APP_BACKEND_URL exported (xdist -n 2). Each test file cleans up its own data, but the job counter still advances, so clear db.counters afterwards if no jobs remain."
+}
