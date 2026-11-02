@@ -28,7 +28,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-      <Toaster theme="dark" position="top-right" richColors />
+      <Toaster theme="dark" position="bottom-right" richColors />
     </div>
   );
 }

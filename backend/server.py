@@ -69,6 +69,10 @@ def r2(v) -> float:
     return round(float(v or 0) + 0.0, 2)
 
 
+def opt2(v):
+    return None if v is None else r2(v)
+
+
 class JobCreate(BaseModel):
     category: Literal["wedding", "other"]
     customer_name: str = Field(min_length=1, max_length=120)
@@ -114,7 +118,8 @@ def compute(doc: dict) -> dict:
     if not doc.get("customer_name", "").strip():
         raise HTTPException(400, "Customer name is required")
     doc["customer_name"] = doc["customer_name"].strip()
-    if not CONTACT_RE.match(doc.get("contact_number", "") or ""):
+    contact = doc.get("contact_number", "") or ""
+    if not CONTACT_RE.match(contact) or not 7 <= sum(c.isdigit() for c in contact) <= 15:
         raise HTTPException(400, "Contact number must be 7-15 digits")
     if doc["category"] == "wedding":
         if doc.get("card_cost") is None or doc.get("printing_cost") is None:
@@ -126,9 +131,9 @@ def compute(doc: dict) -> dict:
         if doc["discount"] > gross:
             raise HTTPException(400, "Discount cannot exceed card cost + printing cost")
         doc["total_amount"] = r2(gross - doc["discount"])
-        doc["actual_card_cost"] = r2(doc.get("actual_card_cost"))
-        doc["actual_printing_cost"] = r2(doc.get("actual_printing_cost"))
-        doc["total_production_cost"] = r2(doc["actual_card_cost"] + doc["actual_printing_cost"])
+        doc["actual_card_cost"] = opt2(doc.get("actual_card_cost"))
+        doc["actual_printing_cost"] = opt2(doc.get("actual_printing_cost"))
+        doc["total_production_cost"] = r2((doc["actual_card_cost"] or 0) + (doc["actual_printing_cost"] or 0))
     else:
         if not (doc.get("job_type") or "").strip():
             raise HTTPException(400, "Type of job is required")
@@ -137,8 +142,8 @@ def compute(doc: dict) -> dict:
         doc["job_type"] = doc["job_type"].strip()
         doc["amount"] = r2(doc["amount"])
         doc["total_amount"] = doc["amount"]
-        doc["actual_production_cost"] = r2(doc.get("actual_production_cost"))
-        doc["total_production_cost"] = doc["actual_production_cost"]
+        doc["actual_production_cost"] = opt2(doc.get("actual_production_cost"))
+        doc["total_production_cost"] = r2(doc["actual_production_cost"])
     doc["advance"] = r2(doc.get("advance"))
     if doc["advance"] > doc["total_amount"]:
         raise HTTPException(400, "Advance cannot exceed total amount")
@@ -267,10 +272,10 @@ async def update_job(job_id: str, payload: JobUpdate):
     for field, label in FIELD_LABELS.items():
         old_v, new_v = job.get(field), new.get(field)
         if field in job or field in changes:
-            if old_v != new_v and not (old_v is None and new_v == 0):
+            if old_v != new_v:
                 entries.append({"id": str(uuid.uuid4()), "field": field, "field_label": label,
                                 "old_value": old_v, "new_value": new_v, "changed_at": ts})
-    if not entries:
+    if not entries and new.get("costs_recorded") == job.get("costs_recorded"):
         return with_flags(job, (await get_settings())["overdue_days"])
     new["updated_at"] = ts
     new["history"] = job.get("history", []) + entries

@@ -1,0 +1,39 @@
+{
+  "summary": "Tested the full backend (27 pytest cases) and the main UI flows end to end. The backend passes 26 of 27 tests. One real bug: saving an actual cost of 0 does not mark costs as recorded. These all work: create and validation for both job types; job numbers (sequential, 10 concurrent creates gave unique numbers); edits with history; delete and restore (job number and history kept, Record entries added); filters; dashboard; overdue rule, including the exact 7-day boundary; reports, including payment buckets and leaving deleted jobs out; settings. UI checks that passed: live calculation and discount/advance errors on both forms; redirect to job detail after save; edit, status change, costs and history tabs; status change on a Work Management card; status, category and search filters; delete dialog, Recycle Bin and restore; print page shows the shop name and customer-facing fields only, with no actual cost or profit; all 6 report tabs; settings shop name showing on the print page; dashboard KPIs; mobile layout.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "PUT /api/jobs/{id}", "issue": "Saving actual costs of 0 (for example actual_production_cost=0) leaves costs_recorded=false. Cause: compute() sets actual_* to 0 by default at creation, so the update finds no changed fields and returns early at 'if not entries' before costs_recorded is saved. The UI still shows 'Costs saved' but the job still reads 'Actual costs not entered' and is left out of profit."},
+      {"endpoint": "POST/PUT /api/jobs", "issue": "CONTACT_RE ^[0-9+\\-\\s]{7,15}$ accepts values with no digits, such as '+-- -- --'. Consider requiring 7-15 actual digits."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Work Management search/category", "issue": "Request results can arrive out of order: there is no stale-response guard or AbortController in load(). Not reproduced on retest, but quickly switching filters could show the wrong list.", "affected_selectors": ["work-search-input", "filter-category-*"]}
+    ],
+    "design_issues": [
+      {"screen": "Edit History", "issues": ["The first cost entry shows the old value as ₹0.00 although costs were never entered. Should show '—'."]},
+      {"screen": "Create/Detail/Reports", "issues": ["Uses the browser's native input type=date/month instead of the shadcn Calendar/Popover picker."]},
+      {"screen": "Job Detail", "issues": ["Sonner toasts at top-right cover the Status/Print/Delete header buttons for a few seconds after each save."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/test_sst_jobs.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Fix update_job so that sending any actual_* key sets costs_recorded=true and saves it even when values do not change, e.g. compute the costs_recorded flip before the 'if not entries' early return, or add a 'Costs Recorded' history entry.",
+    "Optional: make contact validation require 7-15 digits.",
+    "Optional: show '—' for old values on the first cost entry; add a stale-response guard in WorkManagement.load; consider the shadcn date picker."
+  ],
+  "critical_code_review_comments": [
+    "server.py update_job: the early return when nothing changed skips saving costs_recorded (root cause of the zero-cost bug).",
+    "next_job_number uses today's year, not the job date. That matches the spec (sequence restarts each calendar year) and the unique index plus retry loop prevents duplicates.",
+    "list_jobs and dashboard load up to 5000/10000 docs into memory. Fine for a single shop, but there is no pagination."
+  ],
+  "updated_files": ["/app/backend/tests/test_sst_jobs.py"],
+  "success_rate": {"backend": "96% (26/27)", "frontend": "100% of tested flows"},
+  "test_credentials": "None - no auth",
+  "seed_data_creation": "None kept. All TEST_ jobs were deleted from db.jobs; the job counter advanced (to about SST-2026-106); settings were restored to defaults.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Run: REACT_APP_BACKEND_URL=... pytest /app/backend/tests/test_sst_jobs.py (pytest.ini forces -n 2 loadscope; cleanup deletes only ids created by each worker). test_zero_costs_recorded is the known failing regression test. The browser clock is Nov 2026."
+}

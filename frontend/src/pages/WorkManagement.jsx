@@ -19,14 +19,16 @@ export default function WorkManagement() {
   const [category, setCategory] = useState("");
   const [search, setSearch] = useState("");
 
-  const load = useCallback(() => {
-    api.get("/jobs", { params: { search: search || undefined, category: category || undefined } })
-      .then((r) => setJobs(r.data)).catch((e) => toast.error(errMsg(e)));
+  const load = useCallback((signal) => {
+    api.get("/jobs", { signal, params: { search: search || undefined, category: category || undefined } })
+      .then((r) => setJobs(r.data))
+      .catch((e) => { if (e.code !== "ERR_CANCELED") toast.error(errMsg(e)); });
   }, [search, category]);
 
   useEffect(() => {
-    const t = setTimeout(load, 250);
-    return () => clearTimeout(t);
+    const ctrl = new AbortController();
+    const t = setTimeout(() => load(ctrl.signal), 250);
+    return () => { clearTimeout(t); ctrl.abort(); };
   }, [load]);
 
   const changeStatus = async (job, s) => {
