@@ -1,0 +1,144 @@
+{
+  "project_name": "SST Job Management",
+  "shop_name": "SST CARDS AND PRINTERS",
+  "currency": "INR (₹)",
+  "job_number_format": "SST-2026-001",
+  "design_archetype": "THE PERFORMANCE PRO / SWISS INDUSTRIAL DARK",
+  "theme": "Premium Modern Dark Mode with Charcoal/Navy base and Vibrant Royal Blue accents",
+  "target_platform": "React (JavaScript .js/.jsx) + Tailwind CSS + FastAPI + MongoDB",
+  "colors": {
+    "background_base": "#0B0F17",
+    "background_surface_dark": "#111827",
+    "background_surface_elevated": "#1F2937",
+    "background_surface_card": "#161F30",
+    "border_subtle": "#1E293B",
+    "border_accent": "#3B82F6",
+    "border_highlight": "#60A5FA33",
+    "text_primary": "#F8FAFC",
+    "text_secondary": "#94A3B8",
+    "text_muted": "#64748B",
+    "accent_primary": "#2563EB",
+    "accent_hover": "#1D4ED8",
+    "accent_light": "#3B82F6",
+    "accent_cyan": "#06B6D4",
+    "status": {
+      "pending": {
+        "bg": "bg-amber-500/10",
+        "text": "text-amber-400",
+        "border": "border-amber-500/30",
+        "dot": "bg-amber-400"
+      },
+      "in_progress": {
+        "bg": "bg-blue-500/10",
+        "text": "text-blue-400",
+        "border": "border-blue-500/30",
+        "dot": "bg-blue-400 animate-pulse"
+      },
+      "on_hold": {
+        "bg": "bg-purple-500/10",
+        "text": "text-purple-400",
+        "border": "border-purple-500/30",
+        "dot": "bg-purple-400"
+      },
+      "completed": {
+        "bg": "bg-emerald-500/10",
+        "text": "text-emerald-400",
+        "border": "border-emerald-500/30",
+        "dot": "bg-emerald-400"
+      },
+      "delivered": {
+        "bg": "bg-teal-500/10",
+        "text": "text-teal-300",
+        "border": "border-teal-500/30",
+        "dot": "bg-teal-300"
+      }
+    },
+    "metrics": {
+      "sales": "#3B82F6",
+      "advance": "#10B981",
+      "outstanding": "#EF4444",
+      "profit": "#10B981",
+      "cost": "#F59E0B"
+    }
+  },
+  "typography": {
+    "font_family_heading": "Plus Jakarta Sans, Manrope, sans-serif",
+    "font_family_body": "Inter, sans-serif",
+    "font_family_mono": "JetBrains Mono, Source Code Pro, monospace",
+    "hierarchy": {
+      "h1_dashboard": "text-3xl font-bold tracking-tight text-slate-50",
+      "h2_section": "text-xl font-semibold tracking-tight text-slate-100",
+      "h3_card": "text-lg font-medium text-slate-200",
+      "kpi_value": "text-2xl sm:text-3xl font-bold font-mono tracking-tight text-slate-50",
+      "kpi_label": "text-xs font-semibold uppercase tracking-wider text-slate-400",
+      "mono_job_id": "font-mono font-semibold text-blue-400 tracking-wide text-sm bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20"
+    }
+  },
+  "layout_and_navigation": {
+    "sidebar": {
+      "width": "w-64",
+      "style": "bg-slate-900/90 backdrop-blur-md border-r border-slate-800 flex flex-col justify-between h-screen fixed left-0 top-0 z-40",
+      "brand_header": "p-5 border-b border-slate-800 flex items-center gap-3",
+      "nav_item_active": "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-blue-600/20 text-blue-400 border border-blue-500/30 shadow-sm transition-all duration-150",
+      "nav_item_inactive": "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-all duration-150"
+    },
+    "main_content": {
+      "wrapper": "ml-64 min-h-screen bg-[#0B0F17] text-slate-100 p-6 md:p-8 transition-all duration-200",
+      "header_bar": "mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-5"
+    }
+  },
+  "components_design": {
+    "kpi_cards": {
+      "container_grid": "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8",
+      "card_style": "bg-slate-900/80 border border-slate-800 hover:border-slate-700/80 p-5 rounded-xl shadow-lg relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5",
+      "accent_bar": "absolute top-0 left-0 w-full h-1 bg-gradient-to-r"
+    },
+    "job_forms": {
+      "tabs_wrapper": "bg-slate-900 border border-slate-800 p-1.5 rounded-xl flex gap-1 mb-6 max-w-md",
+      "tab_button_active": "flex-1 py-2 px-4 rounded-lg text-sm font-semibold bg-blue-600 text-white shadow-md transition-all",
+      "tab_button_inactive": "flex-1 py-2 px-4 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all",
+      "card_container": "bg-slate-900/90 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl backdrop-blur-sm",
+      "live_calc_panel": "bg-slate-950/80 border border-blue-900/30 p-5 rounded-xl space-y-3"
+    },
+    "work_management_cards": {
+      "grid": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5",
+      "card": "bg-slate-900/90 border border-slate-800/90 hover:border-blue-500/40 rounded-xl p-5 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between group",
+      "profit_badge": "text-xs font-mono font-medium px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+    },
+    "tables": {
+      "container": "bg-slate-900/90 border border-slate-800 rounded-xl overflow-hidden shadow-lg",
+      "th": "bg-slate-950/70 text-slate-400 font-semibold text-xs uppercase tracking-wider p-3.5 text-left border-b border-slate-800",
+      "td": "p-3.5 text-sm text-slate-200 border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors"
+    }
+  },
+  "a4_print_job_sheet": {
+    "strategy": "Light paper styling via standard @media print rules while retaining dark app UI",
+    "print_css_rules": [
+      "@media print { body { background: #ffffff !important; color: #000000 !important; } .no-print { display: none !important; } .print-only { display: block !important; } .print-page { max-width: 100% !important; margin: 0 !important; padding: 20px !important; box-shadow: none !important; border: none !important; } }"
+    ],
+    "header_details": {
+      "shop_title": "SST CARDS AND PRINTERS",
+      "tagline": "Quality Printing & Wedding Card Specialists",
+      "hide_elements_on_print": [
+        "Internal cost breakdowns",
+        "Margin percentages",
+        "Profit numbers",
+        "Sidebar navigation",
+        "Action buttons"
+      ]
+    }
+  },
+  "interactive_states_and_a11y": {
+    "buttons": "Always define explicit hover and focus states with focus:ring-2 focus:ring-blue-500/50 outline-none",
+    "inputs": "bg-slate-950/80 border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-slate-100 placeholder:text-slate-600 rounded-lg px-3.5 py-2 text-sm",
+    "data_testid_requirement": "All interactive elements (buttons, links, form inputs, status toggles, tabs, search boxes, modals) MUST include a kebab-case data-testid attribute e.g. data-testid='create-job-wedding-submit-button'"
+  },
+  "universal_guidelines_for_main_agent": {
+    "file_type": "Remember that React code files in this project use .js and .jsx extensions (JavaScript), NOT TypeScript (.tsx).",
+    "no_ai_slop": "Do not use plain unstyled boxes or center-aligned full app containers. Maintain structured dashboard layout with top headers and sidebar.",
+    "icons": "Use lucide-react icons exclusively. Avoid AI assistant emojis like 🤖 or 💡.",
+    "toasts": "Use 'sonner' for all success and error toasts (located at components/ui/sonner.jsx).",
+    "live_calculation": "All form inputs for Card Cost, Printing Cost, Discount, Advance, Quantity MUST calculate Total and Balance instantly without requiring manual submit.",
+    "testing": "Ensure data-testid attributes are present on every key action element across Dashboard, Wedding Form, Other Printing Form, Work Management, Reports, Recycle Bin, and Settings."
+  }
+}
